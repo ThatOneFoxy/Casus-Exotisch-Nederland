@@ -15,10 +15,7 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.UseSwagger();
-    app.UseSwaggerUI(c =>{
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
-        c.RoutePrefix = string.Empty; // Hierdoor wordt Swagger UI geladen op de root URL.
-    });
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
