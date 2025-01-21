@@ -5,7 +5,7 @@
         private double hoogteInMeters {get; set;}
 
         // ==== Getters ====
-        public override string GetDescription() {
+        public override string VerkrijgBeschrijving() {
             return $"De {name} is een {origin} {type} en groeit in {leefgebied} en is {hoogteInMeters} meter hoog";
         }
 

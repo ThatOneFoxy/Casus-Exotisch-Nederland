@@ -4,7 +4,7 @@
         private string leefgebied {get; set;}
 
         // ==== Getters ====
-        public override string GetDescription() {
+        public override string VerkrijgBerschrijving() {
             return $"De {name} is een {origin} {type} en leeft in {leefgebied}";
         }
 
