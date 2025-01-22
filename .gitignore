@@ -291,3 +291,5 @@ __pycache__/
 *.editorconfig
 /ConsoleApp1/obj/Debug
 *.props
+*.editorconfig
+*.cache
