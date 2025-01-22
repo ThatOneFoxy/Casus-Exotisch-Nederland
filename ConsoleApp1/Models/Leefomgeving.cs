@@ -11,7 +11,7 @@ public class Leefomgeving: Organisme {
     // ==== Methods ====
     public void ToonOrganismen() {
         foreach (Organisme organisme in this.organismen) {
-            Console.WriteLine(organisme.GetDescription());
+            Console.WriteLine(organisme.VerkrijgBeschrijving());
         }
     }
     public void VoegOrganismeToe(Organisme organisme) {

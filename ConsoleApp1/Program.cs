@@ -7,7 +7,7 @@ namespace ConsoleApp1
     internal class Program
     {
         // ======== Functions ========
-        private static void DisplayOrganisms(List<Organisme> organismen)
+        private static void DisplayOrganismen(List<Organisme> organismen)
         {
             if (organismen.Count == 0)
             {
@@ -17,12 +17,12 @@ namespace ConsoleApp1
             {
                 foreach (Organisme organisme in organismen)
                 {
-                    Console.WriteLine(organisme.GetDescription() + "\n");
+                    Console.WriteLine(organisme.VerkrijgBeschrijving() + "\n");
                 }
             }
         }
 
-        private static void AddOrganism(List<Organisme> organismen, Leefomgeving leefomgeving = null)
+        private static void VoegOrganismenToe(List<Organisme> organismen, Leefomgeving leefomgeving = null)
         {
             // ==== Declaring Variables ====
             string? type, origin, leefgebied, name;
@@ -76,7 +76,7 @@ namespace ConsoleApp1
             Console.WriteLine("\n");
         }
 
-        private static void FilterByType(List<Organisme> organismen)
+        private static void FilterPerType(List<Organisme> organismen)
         {
             Console.WriteLine("Op welk type wil je filteren? (Dier/Plant)"); string? type = Console.ReadLine()?.ToLower();
             if (type is not "dier" and not "plant")
@@ -85,18 +85,18 @@ namespace ConsoleApp1
                 return;
             }
 
-            var filteredByType = organismen.Where(organisme => organisme.type == type).ToList();
-            if (filteredByType.Count == 0)
+            var filteredPerType = organismen.Where(organisme => organisme.type == type).ToList();
+            if (filteredPerType.Count == 0)
             {
                 Console.WriteLine($"Er zijn geen organismen van het type {type}.");
             }
-            foreach (Organisme organisme in filteredByType)
+            foreach (Organisme organisme in filteredPerType)
             {
-                Console.WriteLine(organisme.GetDescription());
+                Console.WriteLine(organisme.VerkrijgBeschrijving());
             }
         }
 
-        private static void FilterByOrigin(List<Organisme> organismen)
+        private static void FilterPerOorsprong(List<Organisme> organismen)
         {
             Console.WriteLine("Op welke oorsprong wil je filteren? (Inheems/Exoot)"); string? origin = Console.ReadLine()?.ToLower();
             if (origin is not "inheems" and not "exoot")
@@ -105,14 +105,14 @@ namespace ConsoleApp1
                 return;
             }
 
-            var filteredByOrigin = organismen.Where(organisme => organisme.origin == origin).ToList();
-            if (filteredByOrigin.Count == 0)
+            var filteredPerOorsprong = organismen.Where(organisme => organisme.origin == origin).ToList();
+            if (filteredPerOorsprong.Count == 0)
             {
                 Console.WriteLine($"Er zijn geen organismen van de oorsprong {origin}.");
             }
-            foreach (Organisme organisme in filteredByOrigin)
+            foreach (Organisme organisme in filteredPerOorsprong)
             {
-                Console.WriteLine(organisme.GetDescription());
+                Console.WriteLine(organisme.VerkrijgBeschrijving());
             }
         }
 
@@ -136,24 +136,18 @@ namespace ConsoleApp1
                     switch (choice)
                     {
                         case 1:
-                            DisplayOrganisms(organismen);
+                            DisplayOrganismen(organismen);
                             break;
                         case 2:
-                            AddOrganism(organismen);
+                            VoegOrganismenToe(organismen);
                             break;
                         case 3:
-                            FilterByType(organismen);
+                            FilterPerType(organismen);
                             break;
                         case 4:
-                            FilterByOrigin(organismen);
+                            FilterPerOorsprong(organismen);
                             break;
                         case 5:
-                            AddOrganism(organismen, bos);
-                            break;
-                        case 6:
-                            bos.ToonOrganismen();
-                            break;
-                        case 7:
                             return;
                     }
                 }

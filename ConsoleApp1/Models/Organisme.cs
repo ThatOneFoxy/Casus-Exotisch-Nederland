@@ -6,7 +6,7 @@
         public string origin {get; set;}
 
         // ==== Getters ====
-        public virtual string GetDescription()
+        public virtual string VerkrijgBeschrijving()
         {
             return $"De {name} is een {origin} {type}";
         }
