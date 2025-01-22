@@ -16,10 +16,10 @@ public class API {
     }
 
     // ==== Methods ====
-    public async Task<List<string>?> GetDataFromAPI() {
+    public async Task<List<string>?> GetDataFromAPI(string endpoint) {
         using (HttpClient client = new HttpClient()) {
             try {
-                HttpResponseMessage response = await client.GetAsync(this.apiURL);
+                HttpResponseMessage response = await client.GetAsync($"{this.apiURL}/{endpoint}");
                 response.EnsureSuccessStatusCode();
                 string responseBody = await response.Content.ReadAsStringAsync();
                 var jsonData = JsonSerializer.Deserialize<List<string>>(responseBody);
@@ -32,10 +32,10 @@ public class API {
         return null;
     }
 
-    public async Task PostDataToAPI(List<string> data) {
+    public async Task PostDataToAPI(string endpoint, List<string> data) {
         using (HttpClient client = new HttpClient()) {
             try {
-                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, this.apiURL);
+                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "{this.apiURL}/{endpoint}");
                 request.Content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
 
 
@@ -50,6 +50,7 @@ public class API {
 
         }
     }
+
     // ==== Constructor ====
     public API(string apiURL) {
         this.apiURL = apiURL;

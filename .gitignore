@@ -293,3 +293,4 @@ __pycache__/
 *.props
 *.editorconfig
 *.cache
+*.editorconfig
