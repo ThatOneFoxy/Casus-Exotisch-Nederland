@@ -1,18 +1,20 @@
 using MySql.Data.MySqlClient;
 
-internal class SoortRepository: DatabaseConnection
+internal class SoortRepository : DatabaseConnection
 {
     public SoortRepository()
     {
         InitializeDatabase();
     }
 
+    private string TableName = "Soort";
+
     public void VoegSoortToe(Soort soort)
     {
         var connection = CreateOpenConnection();
 
-        string insertQuery = @"
-            INSERT INTO SOORT (SoortNaam, SoortLatijnseNaam, SoortZeldzaamheid, SoortStatus)
+        string insertQuery = $@"
+            INSERT INTO {TableName} (SoortNaam, SoortLatijnseNaam, SoortZeldzaamheid, SoortStatus)
             VALUES (@SoortNaam, @SoortLatijnseNaam, @SoortZeldzaamheid, @SoortStatus);";
 
         using var command = new MySqlCommand(insertQuery, connection);
@@ -29,8 +31,8 @@ internal class SoortRepository: DatabaseConnection
         var connection = CreateOpenConnection();
 
         var soorten = new List<Soort>();
-        string selectQuery = @"
-            SELECT * FROM SOORT;";
+        string selectQuery = $@"
+            SELECT * FROM {TableName};";
         using var command = new MySqlCommand(selectQuery, connection);
 
         using var reader = command.ExecuteReader();
@@ -47,18 +49,20 @@ internal class SoortRepository: DatabaseConnection
         return soorten;
     }
 
-    public void VeranderSoort(Soort soort)
+    public void VeranderSoort(int soortID, Soort soort)
     {
         var connection = CreateOpenConnection();
 
-        string updateQuery = @"
-        UPDATE SOORT
-        SET SoortLatijnseNaam = @SoortLatijnseNaam,
+        string updateQuery = $@"
+        UPDATE {TableName}
+        SET SoortNaam = @SoortNaam,
+            SoortLatijnseNaam = @SoortLatijnseNaam,
             SoortZeldzaamheid = @SoortZeldzaamheid,
             SoortStatus = @SoortStatus
-        WHERE SoortNaam = @SoortNaam;";
+        WHERE SoortID = @SoortID;";
 
         using var command = new MySqlCommand(updateQuery, connection);
+        command.Parameters.AddWithValue("@SoortID", soortID);
         command.Parameters.AddWithValue("@SoortNaam", soort.naam);
         command.Parameters.AddWithValue("@SoortLatijnseNaam", soort.latijnseNaam);
         command.Parameters.AddWithValue("@SoortZeldzaamheid", soort.zeldzaamheid);
@@ -67,16 +71,16 @@ internal class SoortRepository: DatabaseConnection
         command.ExecuteNonQuery();
     }
 
-    public void VerwijderSoort(string naam)
+    public void VerwijderSoort(int soortID)
     {
         using var connection = CreateOpenConnection();
 
-        string deleteQuery = @"
-        DELETE FROM SOORT
-        WHERE SoortNaam = @SoortNaam;";
+        string deleteQuery = $@"
+        DELETE FROM {TableName}
+        WHERE SoortID = @SoortID;";
 
         using var command = new MySqlCommand(deleteQuery, connection);
-        command.Parameters.AddWithValue("@SoortNaam", naam);
+        command.Parameters.AddWithValue("@SoortID", soortID);
 
         command.ExecuteNonQuery();
     }

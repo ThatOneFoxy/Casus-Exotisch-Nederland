@@ -2,7 +2,7 @@
 
 public class DatabaseConnection
 {
-    private readonly string _connectionString = @"Server=4.231.112.184;Database=ExotischNederland;User ID=root;Password=ExotischNederland!";
+    private readonly string _connectionString = @"Server=48.209.60.187;Database=ExNed-Ruwdata;User ID=root;Password=ExotischNederlandDB123";
 
 
     protected MySqlConnection CreateOpenConnection()

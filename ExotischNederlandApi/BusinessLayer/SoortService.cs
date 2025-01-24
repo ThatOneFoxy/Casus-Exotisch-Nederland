@@ -17,23 +17,16 @@ public class SoortService
         return _repository.HaalAlleSoortenOp();
     }
 
-    public bool UpdateSoort(string soortNaam, Soort soort)
+    public bool UpdateSoort(int soortID, Soort soort)
     {
-        _repository.VeranderSoort(soort);
+        _repository.VeranderSoort(soortID, soort);
         return true;
     }
 
 
-    public bool VerwijderSoort(String naam)
+    public bool VerwijderSoort(int soortID)
     {
-        //TODO: implementeer 
-        //var soort = _repository.HaalInheemseSoortOp(naam);
-        //if (soort == null)
-        //{
-        //    return false;
-        //}
-
-        _repository.VerwijderSoort(naam);
+        _repository.VerwijderSoort(soortID);
         return true;
     }
 }
