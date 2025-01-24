@@ -287,10 +287,13 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
-*.cache
-*.editorconfig
+
+# ==== Own Specifics ====
+# Folders
 /ConsoleApp1/obj/Debug
-*.props
+
+# File extensions
 *.editorconfig
 *.cache
-*.editorconfig
+*.props
+*.vsidx

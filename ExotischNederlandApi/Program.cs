@@ -4,7 +4,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<InheemseSoortService>();
+builder.Services.AddScoped<SoortService>();
+builder.Services.AddScoped<WaarnemingService>();
 
 builder.Services.AddCors(options =>
 {
