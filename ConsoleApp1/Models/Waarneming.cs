@@ -83,7 +83,7 @@ public class Waarneming : API {
         bool requestResult = await this.DELToAPI(waarnemingID.ToString());
 
         if (requestResult) {
-            Console.WriteLine("Waarneming verwijderd.");
+            Console.WriteLine("Waarneming verwijderd.\n");
         }
         else {
             Console.WriteLine("Er is iets fout gegaan bij het verwijderen van de waarneming.");
@@ -166,8 +166,7 @@ public class Waarneming : API {
         this.WaarnemingLinks = "";
     }
 
-    public Waarneming(int waarnemingID, int soortID, DateTime datum, TimeSpan tijd, int aantalIndividuen, string geslacht, bool isGevalideerd, string waarnemingLinks)
-        : base(apiURL: "https://localhost:5001/api/Waarneming") {
+    public Waarneming(int waarnemingID, int soortID, DateTime datum, TimeSpan tijd, int aantalIndividuen, string geslacht, bool isGevalideerd, string waarnemingLinks) : base(apiURL: "https://localhost:5001/api/Waarneming") {
         this.WaarnemingID = waarnemingID;
         this.SoortID = soortID;
         this.Datum = datum;

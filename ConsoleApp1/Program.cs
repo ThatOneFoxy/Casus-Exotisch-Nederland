@@ -5,10 +5,8 @@ using Microsoft.VisualBasic;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 // ======== Namespace ========
-namespace ConsoleApp1
-{
-    internal class Program
-    {
+namespace ConsoleApp1 {
+    internal class Program {
         // ======== Functions ========
         private static async Task DisplayWaarnemingen() {
             Waarneming waarnemingInstance = new Waarneming();
@@ -20,8 +18,7 @@ namespace ConsoleApp1
             }
         }
 
-        private static async Task AddWaarneming()
-        {
+        private static async Task AddWaarneming() {
             Waarneming waarnemingInstance = new Waarneming();
             Waarneming newWaarneming = waarnemingInstance.WaarnemingPrompt();
 
@@ -31,7 +28,7 @@ namespace ConsoleApp1
         private static async Task UpdateWaarneming() {
             // ==== Declaring Variables ====
             string input;
-            int choice; ;
+            int choice;
 
             Waarneming waarnemingInstance = new Waarneming();
             List<Waarneming> waarnemingen = await waarnemingInstance.GetWaarnemingen();
@@ -54,11 +51,11 @@ namespace ConsoleApp1
                 }
             }
 
-            Waarneming waarneming = waarnemingen[choice-1];
+            Waarneming waarneming = waarnemingen[choice - 1];
             waarneming.ToonWaarnemingDetails();
 
             Console.WriteLine("\nWelk detail moet aangepast worden?\n1. SoortID\n2. Datum\n3. Tijd\n4. Aantal Individuen\n5. Geslacht\n6. Is Gevalideerd\n7. Waarneming Links");
-            
+
             input = Console.ReadLine();
             switch (input) {
                 case "1":
@@ -109,7 +106,7 @@ namespace ConsoleApp1
         private static async Task DeleteWaarneming() {
             // ==== Declaring Variables ====
             string input;
-            int choice; ;
+            int choice;
 
             Waarneming waarnemingInstance = new Waarneming();
             List<Waarneming> waarnemingen = await waarnemingInstance.GetWaarnemingen();
@@ -134,9 +131,112 @@ namespace ConsoleApp1
 
             await waarnemingInstance.DeleteWaarneming(choice);
         }
+
+        private static async Task DisplaySoorten() {
+            Soort soortInstance = new Soort();
+            List<Soort> soorten = await soortInstance.GetSoorten();
+
+            Console.WriteLine("Alle soorten:");
+            foreach (Soort soort in soorten) {
+                soort.ToonSoortDetails();
+            }
+        }
+
+        private static async Task AddSoort() {
+            Soort soortInstance = new Soort();
+            Soort newSoort = soortInstance.SoortPrompt();
+
+            await soortInstance.PostSoort(newSoort);
+        }
+
+        private static async Task UpdateSoort() {
+            // ==== Declaring Variables ====
+            string input;
+            int choice;
+
+            Soort soortInstance = new Soort();
+            List<Soort> soorten = await soortInstance.GetSoorten();
+
+            // ==== Start of Function ====
+            Console.WriteLine("\nWelke soort zou je willen aanpassen?");
+
+            for (int i = 0; i < soorten.Count; i++) {
+                Console.WriteLine($"{i + 1}. Soort ID: {soorten[i].SoortID}, Naam: {soorten[i].Naam}");
+            }
+
+            while (true) {
+                input = Console.ReadLine();
+
+                if (int.TryParse(input, out choice)) {
+                    if (choice >= 1 && choice <= soorten.Count) {
+                        break;
+                    }
+                    Console.WriteLine($"Ongeldige keuze. Kies een nummer tussen 1 en {soorten.Count}.");
+                }
+            }
+
+            Soort soort = soorten[choice - 1];
+            soort.ToonSoortDetails();
+
+            Console.WriteLine("\nWelk detail moet aangepast worden?\n1. Naam\n2. Latijnse Naam\n3. Zeldzaamheid\n4. Status");
+
+            input = Console.ReadLine();
+            switch (input) {
+                case "1":
+                    Console.WriteLine("Nieuwe Naam:");
+                    soort.Naam = Console.ReadLine();
+                    break;
+                case "2":
+                    Console.WriteLine("Nieuwe Latijnse Naam:");
+                    soort.Beschrijving = Console.ReadLine();
+                    break;
+                case "3":
+                    Console.WriteLine("Nieuwe Zeldzaamheid:");
+                    soort.Zeldzaamheid = Console.ReadLine();
+                    break;
+                case "4":
+                    Console.WriteLine("Nieuwe Status:");
+                    soort.Status = Console.ReadLine();
+                    break;
+                default:
+                    Console.WriteLine("Ongeldige keuze.");
+                    break;
+            }
+
+            await soortInstance.UpdateSoort(soort);
+        }
+
+        private static async Task DeleteSoort() {
+            // ==== Declaring Variables ====
+            string input;
+            int choice;
+
+            Soort soortInstance = new Soort();
+            List<Soort> soorten = await soortInstance.GetSoorten();
+
+            // ==== Start of Function ====
+            Console.WriteLine("\nWelke soort zou je willen verwijderen?");
+
+            for (int i = 0; i < soorten.Count; i++) {
+                Console.WriteLine($"{i + 1}. Soort ID: {soorten[i].SoortID}, Naam: {soorten[i].Naam}");
+            }
+
+            while (true) {
+                input = Console.ReadLine();
+
+                if (int.TryParse(input, out choice)) {
+                    if (choice >= 1 && choice <= soorten.Count) {
+                        break;
+                    }
+                    Console.WriteLine($"Ongeldige keuze. Kies een nummer tussen 1 en {soorten.Count}.");
+                }
+            }
+
+            await soortInstance.DeleteSoort(choice);
+        }
+
         // ======== Main ========
-        static async Task Main(string[] args)
-        {
+        static async Task Main(string[] args) {
             // ==== Start of Main ====
             while (true) {
                 Console.Write(""""
@@ -158,7 +258,7 @@ namespace ConsoleApp1
 
                 string input = Console.ReadLine();
                 if (int.TryParse(input, out int choice)) {
-                    if (choice is < 1 or > 5) { Console.WriteLine("Ongeldige keuze. Kies een nummer tussen 1 en 5."); continue; }
+                    if (choice is < 1 or > 8) { Console.WriteLine("Ongeldige keuze. Kies een nummer tussen 1 en 8."); continue; }
 
                     switch (choice) {
                         case 1:
@@ -173,8 +273,18 @@ namespace ConsoleApp1
                         case 4:
                             await DeleteWaarneming();
                             break;
+                        case 5:
+                            await DisplaySoorten();
+                            break;
+                        case 6:
+                            await AddSoort();
+                            break;
                         case 7:
-                            return;
+                            await UpdateSoort();
+                            break;
+                        case 8:
+                            await DeleteSoort();
+                            break;
                     }
                 }
             }
