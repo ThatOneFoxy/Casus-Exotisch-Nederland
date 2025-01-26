@@ -16,38 +16,46 @@ public class API {
     }
 
     // ==== Methods ====
-    public async Task<List<string>?> GetDataFromAPI(string endpoint) {
+    public async Task<string> GetDataFromAPI(string apiUrl) {
         using (HttpClient client = new HttpClient()) {
             try {
-                HttpResponseMessage response = await client.GetAsync($"{this.apiURL}/{endpoint}");
+                // Console.WriteLine($"Sending GET request to {apiUrl}");
+                HttpResponseMessage response = await client.GetAsync(apiUrl);
                 response.EnsureSuccessStatusCode();
                 string responseBody = await response.Content.ReadAsStringAsync();
-                var jsonData = JsonSerializer.Deserialize<List<string>>(responseBody);
-                return jsonData;
+                // Console.WriteLine($"Received response: {responseBody}");
+                return responseBody;
             }
             catch (HttpRequestException e) {
                 Console.WriteLine($"An error occurred: {e.Message}");
+                return null;
+            }
+            catch (JsonException e) {
+                Console.WriteLine($"JSON deserialization error: {e.Message}");
+                return null;
             }
         }
-        return null;
     }
 
-    public async Task PostDataToAPI(string endpoint, List<string> data) {
+    public async Task<bool> PostDataToAPI(string endpoint, string data) {
         using (HttpClient client = new HttpClient()) {
             try {
-                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "{this.apiURL}/{endpoint}");
-                request.Content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
-
+                // Console.WriteLine($"Sending POST request to {endpoint} with data: {data}");
+                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, $"{this.apiURL}");
+                request.Content = new StringContent(data, Encoding.UTF8, "application/json");
 
                 HttpResponseMessage response = await client.SendAsync(request);
                 response.EnsureSuccessStatusCode();
                 string responseBody = await response.Content.ReadAsStringAsync();
-                Console.WriteLine(responseBody);
+                // Console.WriteLine($"Received response: {responseBody}");
+
+                if (response.IsSuccessStatusCode) { return true; }
+                return false;
             }
             catch (HttpRequestException e) {
                 Console.WriteLine($"An error occurred: {e.Message}");
+                return false;
             }
-
         }
     }
 

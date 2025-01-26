@@ -1,16 +1,16 @@
 using MySql.Data.MySqlClient;
 
-internal class WaarnemingRepository : DatabaseConnection
-{
-    public WaarnemingRepository()
-    {
-        InitializeDatabase();
-    }
+internal class WaarnemingRepository : DatabaseConnection {
+    // ==== Properties ====
     private string TableName = "Waarnemingen";
 
-    public void VoegWaarnemingToe(Waarneming waarneming)
-    {
-        var connection = CreateOpenConnection();
+    // ==== Methods ====
+    public WaarnemingRepository() {
+        InitializeDatabase();
+    }
+
+    public void VoegWaarnemingToe(Waarneming waarneming) {
+        using var connection = CreateOpenConnection();
         string insertQuery = $@"
             INSERT INTO {TableName} (Tijd, Datum, AantalIndividuen, Geslacht, IsGevalideerd, WaarnemingLinks, SoortID)
             VALUES (@Tijd, @Datum, @AantalIndividuen, @Geslacht, @IsGevalideerd, @WaarnemingLinks, @SoortID);";
@@ -25,32 +25,30 @@ internal class WaarnemingRepository : DatabaseConnection
         command.ExecuteNonQuery();
     }
 
-    public List<Waarneming> HaalAlleWaarnemingenOp()
-    {
-        var connection = CreateOpenConnection();
+    public List<Waarneming> HaalAlleWaarnemingenOp() {
+        using var connection = CreateOpenConnection();
         var waarnemingen = new List<Waarneming>();
         string selectQuery = $@"
             SELECT * FROM {TableName};";
         using var command = new MySqlCommand(selectQuery, connection);
         using var reader = command.ExecuteReader();
-        while (reader.Read())
-        {
+
+        while (reader.Read()) {
             int id = reader.GetInt32(0);
-            TimeSpan tijd = reader.GetTimeSpan(1);
-            DateTime datum = reader.GetDateTime(2);
-            int aantalIndividuen = reader.GetInt32(3);
-            string geslacht = reader.GetString(4);
-            bool isGevalideerd = reader.GetBoolean(5);
-            string waarnemingLinks = reader.GetString(6);
-            int soortId = reader.GetInt32(7);
+            int soortId = reader.GetInt32(1);
+            TimeSpan tijd = reader.GetTimeSpan(2);
+            DateTime datum = reader.GetDateTime(3);
+            int aantalIndividuen = reader.GetInt32(4);
+            string geslacht = reader.GetString(5);
+            bool isGevalideerd = reader.GetBoolean(6);
+            string waarnemingLinks = reader.GetString(7);
             waarnemingen.Add(new Waarneming(id, tijd, datum, aantalIndividuen, geslacht, isGevalideerd, waarnemingLinks, soortId));
         }
         return waarnemingen;
     }
 
-    public void VeranderWaarneming(int waarnemingId, Waarneming waarneming)
-    {
-        var connection = CreateOpenConnection();
+    public void VeranderWaarneming(int waarnemingId, Waarneming waarneming) {
+        using var connection = CreateOpenConnection();
         string updateQuery = $@"
             UPDATE {TableName}
             SET Tijd = @Tijd,
@@ -73,8 +71,7 @@ internal class WaarnemingRepository : DatabaseConnection
         command.ExecuteNonQuery();
     }
 
-    public void VerwijderWaarneming(int waarnemingId)
-    {
+    public void VerwijderWaarneming(int waarnemingId) {
         using var connection = CreateOpenConnection();
         string deleteQuery = $@"
             DELETE FROM {TableName}

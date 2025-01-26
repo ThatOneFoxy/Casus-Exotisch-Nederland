@@ -24,6 +24,7 @@ namespace MinimalApiExample.Controllers
             }
 
             _service.RegistreerWaarneming(waarneming);
+
             return Ok("Waarneming toegevoegd.");
         }
 
