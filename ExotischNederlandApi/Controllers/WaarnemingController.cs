@@ -1,25 +1,19 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace MinimalApiExample.Controllers
-{
-
+namespace MinimalApiExample.Controllers {
     [ApiController]
     [Route("api/[controller]")]
-    public class WaarnemingController : ControllerBase
-    {
+    public class WaarnemingController : ControllerBase {
         private readonly WaarnemingService _service;
 
-        public WaarnemingController(WaarnemingService service)
-        {
+        public WaarnemingController(WaarnemingService service) {
             _service = service;
         }
 
-        // POST: api/Waarenming
+        // POST: api/Waarneming
         [HttpPost]
-        public IActionResult VoegWaarnemingToe([FromBody] Waarneming waarneming)
-        {
-            if (waarneming == null)
-            {
+        public IActionResult VoegWaarnemingToe([FromBody] Waarneming waarneming) {
+            if (waarneming == null) {
                 return BadRequest("Waarneming mag niet null zijn.");
             }
 
@@ -28,22 +22,33 @@ namespace MinimalApiExample.Controllers
             return Ok("Waarneming toegevoegd.");
         }
 
-        // GET: api/Waarenming
+        // GET: api/Waarneming
         [HttpGet]
-        public IActionResult HaalAlleWaarnemingenOp()
-        {
+        public IActionResult HaalAlleWaarnemingenOp() {
             var waarnemingen = _service.HaalAlleWaarnemingenOp();
             return Ok(waarnemingen);
         }
 
+        // PUT: api/Waarneming/{waarnemingID}
+        [HttpPut("{waarnemingID}")]
+        public IActionResult UpdateWaarneming(int waarnemingID, [FromBody] Waarneming updatedWaarneming) {
+            if (updatedWaarneming == null) {
+                return BadRequest("Ongeldige gegevens.");
+            }
 
-        // DELETE: api/Waarenming{WaarnemingID}
+            var isUpdated = _service.UpdateWaarneming(waarnemingID, updatedWaarneming);
+            if (!isUpdated) {
+                return NotFound($"Waarneming met id {waarnemingID} niet gevonden.");
+            }
+
+            return Ok($"Waarneming met id {waarnemingID} is bijgewerkt.");
+        }
+
+        // DELETE: api/Waarneming/{waarnemingID}
         [HttpDelete("{waarnemingID}")]
-        public IActionResult VerwijderSoort(int waarnemingID)
-        {
+        public IActionResult VerwijderWaarneming(int waarnemingID) {
             var isVerwijderd = _service.VerwijderWaarneming(waarnemingID);
-            if (!isVerwijderd)
-            {
+            if (!isVerwijderd) {
                 return NotFound($"Waarneming met id {waarnemingID} niet gevonden.");
             }
 

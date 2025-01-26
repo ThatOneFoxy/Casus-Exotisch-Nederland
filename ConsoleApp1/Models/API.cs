@@ -1,4 +1,5 @@
 ﻿// ======== Imports ========
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -37,7 +38,7 @@ public class API {
         }
     }
 
-    public async Task<bool> PostDataToAPI(string endpoint, string data) {
+    public async Task<bool> PostDataToAPI(string data) {
         using (HttpClient client = new HttpClient()) {
             try {
                 // Console.WriteLine($"Sending POST request to {endpoint} with data: {data}");
@@ -49,6 +50,47 @@ public class API {
                 string responseBody = await response.Content.ReadAsStringAsync();
                 // Console.WriteLine($"Received response: {responseBody}");
 
+                if (response.IsSuccessStatusCode) { return true; }
+                return false;
+            }
+            catch (HttpRequestException e) {
+                Console.WriteLine($"An error occurred: {e.Message}");
+                return false;
+            }
+        }
+    }
+
+    public async Task<bool> PUTDataToAPI(string endpoint, string data) {
+        using (HttpClient client = new HttpClient()) {
+            try {
+                // Console.WriteLine($"Sending PUT request to {endpoint} with data: {data}");
+                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, $"{this.apiURL}/{endpoint}");
+                request.Content = new StringContent(data, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await client.SendAsync(request);
+                response.EnsureSuccessStatusCode();
+                string responseBody = await response.Content.ReadAsStringAsync();
+                // Console.WriteLine($"Received response: {responseBody}");
+
+                if (response.IsSuccessStatusCode) { return true; }
+                return false;
+            }
+            catch (HttpRequestException e) {
+                Console.WriteLine($"An error occurred: {e.Message}");
+                return false;
+            }
+        }
+    }
+
+    public async Task<bool> DELToAPI(string endpoint) {
+        using (HttpClient client = new HttpClient()) {
+            try {
+                // Console.WriteLine($"Sending PUT request to {endpoint} with data: {data}");
+                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Delete, $"{this.apiURL}/{endpoint}");
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                response.EnsureSuccessStatusCode();
+                string responseBody = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode) { return true; }
                 return false;
             }

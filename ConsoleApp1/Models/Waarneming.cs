@@ -29,6 +29,16 @@ public class Waarneming : API {
     public string WaarnemingLinks { get; set; }
 
     // ==== Methods ====
+    public void ToonWaarnemingDetails() {
+        Console.WriteLine($"Soort ID: {this.SoortID}");
+        Console.WriteLine($"Datum: {this.Datum}");
+        Console.WriteLine($"Tijd: {this.Tijd}");
+        Console.WriteLine($"Aantal individuen: {this.AantalIndividuen}");
+        Console.WriteLine($"Geslacht: {this.Geslacht}");
+        Console.WriteLine($"Is gevalideerd: {this.IsGevalideerd}");
+        Console.WriteLine($"Waarneming links: {this.WaarnemingLinks}\n");
+    }
+
     public async Task<List<Waarneming>> GetWaarnemingen() {
         var data = await this.GetDataFromAPI(this.GetAPIURL());
 
@@ -44,7 +54,7 @@ public class Waarneming : API {
         string jsonString = JsonSerializer.Serialize(waarneming);
         Console.WriteLine(jsonString);
 
-        bool requestResult = await this.PostDataToAPI(this.GetAPIURL(), jsonString);
+        bool requestResult = await this.PostDataToAPI(jsonString);
 
         if (requestResult) {
             Console.WriteLine("Waarneming toegevoegd.");
@@ -52,6 +62,96 @@ public class Waarneming : API {
         else {
             Console.WriteLine("Er is iets fout gegaan bij het toevoegen van de waarneming.");
         }
+    }
+
+    public async Task UpdateWaarneming(Waarneming waarneming) {
+        // Making it into a good json
+        string jsonString = JsonSerializer.Serialize(waarneming);
+        Console.WriteLine(jsonString);
+
+        bool requestResult = await this.PUTDataToAPI(waarneming.WaarnemingID.ToString(), jsonString);
+
+        if (requestResult) {
+            Console.WriteLine("Waarneming bijgewerkt.");
+        }
+        else {
+            Console.WriteLine("Er is iets fout gegaan bij het bijwerken van de waarneming.");
+        }
+    }
+
+    public async Task DeleteWaarneming(int waarnemingID) {
+        bool requestResult = await this.DELToAPI(waarnemingID.ToString());
+
+        if (requestResult) {
+            Console.WriteLine("Waarneming verwijderd.");
+        }
+        else {
+            Console.WriteLine("Er is iets fout gegaan bij het verwijderen van de waarneming.");
+        }
+    }
+
+    public Waarneming WaarnemingPrompt() {
+        // ==== Declaring Variables ====
+        int soortID, aantalIndividuen;
+        string geslacht;
+        bool isGevalideerd;
+        TimeSpan tijd;
+        DateTime datum;
+
+        while (true) {
+            Console.WriteLine("SoortID:");
+            string input = Console.ReadLine();
+            if (int.TryParse(input, out soortID)) { break; }
+            Console.WriteLine("Ongeldige invoer. Voer een getal in.");
+        }
+
+        while (true) {
+            Console.WriteLine("Tijd:");
+            string input = Console.ReadLine();
+            if (TimeSpan.TryParse(input, out tijd)) { break; }
+            Console.WriteLine("Ongeldige invoer. Voer een tijd in.");
+        }
+
+        while (true) {
+            Console.WriteLine("Datum:");
+            string input = Console.ReadLine();
+            if (DateTime.TryParse(input, out datum)) { break; }
+            Console.WriteLine("Ongeldige invoer. Voer een datum in.");
+        }
+
+        while (true) {
+            Console.WriteLine("Aantal individuen:");
+            string input = Console.ReadLine();
+            if (int.TryParse(input, out aantalIndividuen)) { break; }
+            Console.WriteLine("Ongeldige invoer. Voer een getal in.");
+        }
+
+        while (true) {
+            Console.WriteLine("Geslacht:");
+            geslacht = Console.ReadLine();
+
+            if (geslacht != null) { break; }
+            Console.WriteLine("Ongeldige invoer. Voer een geslacht in.");
+        }
+
+        while (true) {
+            Console.WriteLine("Is de waarneming gevalideerd (ja/nee)?:");
+            string input = Console.ReadLine();
+            if (input is "ja" or "nee") { isGevalideerd = input == "ja" ? true : false; break; }
+            Console.WriteLine("Ongeldige invoer. Voer ja of nee in.");
+        }
+
+        // ==== Start of Function ====
+        Waarneming newWaarneming = new Waarneming {
+            SoortID = soortID,
+            Tijd = tijd,
+            Datum = datum,
+            AantalIndividuen = aantalIndividuen,
+            Geslacht = geslacht,
+            IsGevalideerd = isGevalideerd,
+            WaarnemingLinks = ""
+        };
+        return newWaarneming;
     }
 
     // ==== Constructor ====

@@ -16,80 +16,14 @@ namespace ConsoleApp1
 
             Console.WriteLine("Alle waarnemingen:");
             foreach (Waarneming waarneming in waarnemingen) {
-                Console.WriteLine($"Soort ID: {waarneming.SoortID}");
-                Console.WriteLine($"Datum: {waarneming.Datum}");
-                Console.WriteLine($"Tijd: {waarneming.Tijd}");
-                Console.WriteLine($"Aantal individuen: {waarneming.AantalIndividuen}");
-                Console.WriteLine($"Geslacht: {waarneming.Geslacht}");
-                Console.WriteLine($"Is gevalideerd: {waarneming.IsGevalideerd}");
-                Console.WriteLine($"Waarneming links: {waarneming.WaarnemingLinks}\n");
+                waarneming.ToonWaarnemingDetails();
             }
         }
 
-        private static async Task AddWaarneming() {
-            // ==== Declaring Variables ====
-            int soortID, aantalIndividuen;
-            string geslacht;
-            bool isGevalideerd;
-            TimeSpan tijd;
-            DateTime datum;
-
-
+        private static async Task AddWaarneming()
+        {
             Waarneming waarnemingInstance = new Waarneming();
-
-            while (true) {
-                Console.WriteLine("SoortID:");
-                string input = Console.ReadLine();
-                if (int.TryParse(input, out soortID)) { break; }
-                Console.WriteLine("Ongeldige invoer. Voer een getal in.");
-            }
-            
-            while (true) {
-                Console.WriteLine("Tijd:");
-                string input = Console.ReadLine();
-                if (TimeSpan.TryParse(input, out tijd)) { break; }
-                Console.WriteLine("Ongeldige invoer. Voer een tijd in.");
-            }
-            
-            while (true) {
-                Console.WriteLine("Datum:");
-                string input = Console.ReadLine();
-                if (DateTime.TryParse(input, out datum)) { break; }
-                Console.WriteLine("Ongeldige invoer. Voer een datum in.");
-            }
-            
-            while (true) {
-                Console.WriteLine("Aantal individuen:");
-                string input = Console.ReadLine();
-                if (int.TryParse(input, out aantalIndividuen)) { break; }
-                Console.WriteLine("Ongeldige invoer. Voer een getal in.");
-            }
-            
-            while (true) {
-                Console.WriteLine("Geslacht:");
-                geslacht = Console.ReadLine();
-            
-                if (geslacht != null) { break; }
-                Console.WriteLine("Ongeldige invoer. Voer een geslacht in.");
-            }
-            
-            while (true) {
-                Console.WriteLine("Is de waarneming gevalideerd (ja/nee)?:");
-                string input = Console.ReadLine();
-                if (input is "ja" or "nee") { isGevalideerd = input == "ja" ? true : false; break; }
-                Console.WriteLine("Ongeldige invoer. Voer ja of nee in.");
-            }
-
-            // ==== Start of Function ====
-            Waarneming newWaarneming = new Waarneming {
-                SoortID = soortID,
-                Tijd = tijd,
-                Datum = datum,
-                AantalIndividuen = aantalIndividuen,
-                Geslacht = geslacht,
-                IsGevalideerd = isGevalideerd,
-                WaarnemingLinks = ""
-            };
+            Waarneming newWaarneming = waarnemingInstance.WaarnemingPrompt();
 
             await waarnemingInstance.PostWaarneming(newWaarneming);
         }
@@ -97,6 +31,7 @@ namespace ConsoleApp1
         private static async Task UpdateWaarneming() {
             // ==== Declaring Variables ====
             string input;
+            int choice; ;
 
             Waarneming waarnemingInstance = new Waarneming();
             List<Waarneming> waarnemingen = await waarnemingInstance.GetWaarnemingen();
@@ -110,7 +45,8 @@ namespace ConsoleApp1
 
             while (true) {
                 input = Console.ReadLine();
-                if (int.TryParse(input, out int choice)) {
+
+                if (int.TryParse(input, out choice)) {
                     if (choice >= 1 && choice <= waarnemingen.Count) {
                         break;
                     }
@@ -118,7 +54,85 @@ namespace ConsoleApp1
                 }
             }
 
+            Waarneming waarneming = waarnemingen[choice-1];
+            waarneming.ToonWaarnemingDetails();
 
+            Console.WriteLine("\nWelk detail moet aangepast worden?\n1. SoortID\n2. Datum\n3. Tijd\n4. Aantal Individuen\n5. Geslacht\n6. Is Gevalideerd\n7. Waarneming Links");
+            
+            input = Console.ReadLine();
+            switch (input) {
+                case "1":
+                    Console.WriteLine("Nieuwe SoortID:");
+                    if (int.TryParse(Console.ReadLine(), out int newSoortID)) {
+                        waarneming.SoortID = newSoortID;
+                    }
+                    break;
+                case "2":
+                    Console.WriteLine("Nieuwe Datum:");
+                    if (DateTime.TryParse(Console.ReadLine(), out DateTime newDatum)) {
+                        waarneming.Datum = newDatum;
+                    }
+                    break;
+                case "3":
+                    Console.WriteLine("Nieuwe Tijd:");
+                    if (TimeSpan.TryParse(Console.ReadLine(), out TimeSpan newTijd)) {
+                        waarneming.Tijd = newTijd;
+                    }
+                    break;
+                case "4":
+                    Console.WriteLine("Nieuw Aantal Individuen:");
+                    if (int.TryParse(Console.ReadLine(), out int newAantalIndividuen)) {
+                        waarneming.AantalIndividuen = newAantalIndividuen;
+                    }
+                    break;
+                case "5":
+                    Console.WriteLine("Nieuw Geslacht:");
+                    waarneming.Geslacht = Console.ReadLine();
+                    break;
+                case "6":
+                    Console.WriteLine("Is Gevalideerd (ja/nee):");
+                    string isGevalideerdInput = Console.ReadLine();
+                    waarneming.IsGevalideerd = isGevalideerdInput.ToLower() == "ja";
+                    break;
+                case "7":
+                    Console.WriteLine("Nieuwe Waarneming Links:");
+                    waarneming.WaarnemingLinks = Console.ReadLine();
+                    break;
+                default:
+                    Console.WriteLine("Ongeldige keuze.");
+                    break;
+            }
+
+            await waarnemingInstance.UpdateWaarneming(waarneming);
+        }
+
+        private static async Task DeleteWaarneming() {
+            // ==== Declaring Variables ====
+            string input;
+            int choice; ;
+
+            Waarneming waarnemingInstance = new Waarneming();
+            List<Waarneming> waarnemingen = await waarnemingInstance.GetWaarnemingen();
+
+            // ==== Start of Function ====
+            Console.WriteLine("\nWelke waarneming zou je willen verwijderen?");
+
+            for (int i = 0; i < waarnemingen.Count; i++) {
+                Console.WriteLine($"{i + 1}. Soort ID: {waarnemingen[i].SoortID}, Datum: {waarnemingen[i].Datum}");
+            }
+
+            while (true) {
+                input = Console.ReadLine();
+
+                if (int.TryParse(input, out choice)) {
+                    if (choice >= 1 && choice <= waarnemingen.Count) {
+                        break;
+                    }
+                    Console.WriteLine($"Ongeldige keuze. Kies een nummer tussen 1 en {waarnemingen.Count}.");
+                }
+            }
+
+            await waarnemingInstance.DeleteWaarneming(choice);
         }
         // ======== Main ========
         static async Task Main(string[] args)
@@ -155,6 +169,9 @@ namespace ConsoleApp1
                             break;
                         case 3:
                             await UpdateWaarneming();
+                            break;
+                        case 4:
+                            await DeleteWaarneming();
                             break;
                         case 7:
                             return;
