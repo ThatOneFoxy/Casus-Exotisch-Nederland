@@ -17,15 +17,21 @@ public class API {
     }
 
     // ==== Methods ====
-    public async Task<string> GetDataFromAPI(string apiUrl) {
+    public async Task<string> GetDataFromAPI(string apiUrl, int id=0) {
+        string url = id == 0 ? apiUrl : $"{apiUrl}/{id.ToString()}";
+
         using (HttpClient client = new HttpClient()) {
             try {
                 // Console.WriteLine($"Sending GET request to {apiUrl}");
-                HttpResponseMessage response = await client.GetAsync(apiUrl);
+                HttpResponseMessage response = await client.GetAsync(url);
                 response.EnsureSuccessStatusCode();
                 string responseBody = await response.Content.ReadAsStringAsync();
                 // Console.WriteLine($"Received response: {responseBody}");
                 return responseBody;
+            }
+            catch (HttpRequestException e) when (e.StatusCode == HttpStatusCode.NotFound) {
+                Console.WriteLine("Error 404: Resource not found.");
+                return null;
             }
             catch (HttpRequestException e) {
                 Console.WriteLine($"An error occurred: {e.Message}");

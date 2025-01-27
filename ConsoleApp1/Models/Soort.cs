@@ -39,9 +39,21 @@ public class Soort : API {
         return new List<Soort>();
     }
 
+    public async Task<bool> GetSoort(int soortID)
+    {
+        var data = await this.GetDataFromAPI(this.GetAPIURL(), soortID);
+
+        if (data != null) {
+            Soort soort = JsonSerializer.Deserialize<Soort>(data);
+            if (soort != null) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public async Task PostSoort(Soort soort) {
         string jsonString = JsonSerializer.Serialize(soort);
-        Console.WriteLine(jsonString);
 
         bool requestResult = await this.PostDataToAPI(jsonString);
 
@@ -55,7 +67,6 @@ public class Soort : API {
 
     public async Task UpdateSoort(Soort soort) {
         string jsonString = JsonSerializer.Serialize(soort);
-        Console.WriteLine(jsonString);
 
         bool requestResult = await this.PUTDataToAPI(soort.SoortID.ToString(), jsonString);
 

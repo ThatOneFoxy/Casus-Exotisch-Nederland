@@ -52,7 +52,6 @@ public class Waarneming : API {
     public async Task PostWaarneming(Waarneming waarneming) {
         // Making it into a good json
         string jsonString = JsonSerializer.Serialize(waarneming);
-        Console.WriteLine(jsonString);
 
         bool requestResult = await this.PostDataToAPI(jsonString);
 
@@ -65,10 +64,11 @@ public class Waarneming : API {
     }
 
     public async Task UpdateWaarneming(Waarneming waarneming) {
+        // Checking if the soortID exists
+        
+
         // Making it into a good json
         string jsonString = JsonSerializer.Serialize(waarneming);
-        Console.WriteLine(jsonString);
-
         bool requestResult = await this.PUTDataToAPI(waarneming.WaarnemingID.ToString(), jsonString);
 
         if (requestResult) {

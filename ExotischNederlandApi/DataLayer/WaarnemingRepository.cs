@@ -48,6 +48,7 @@ internal class WaarnemingRepository : DatabaseConnection {
     }
 
     public void VeranderWaarneming(int waarnemingId, Waarneming waarneming) {
+        // ==== Declaring Variables ====
         using var connection = CreateOpenConnection();
         string updateQuery = $@"
             UPDATE {TableName}

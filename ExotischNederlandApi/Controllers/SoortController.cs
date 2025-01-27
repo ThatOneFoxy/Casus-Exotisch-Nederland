@@ -26,7 +26,17 @@ namespace MinimalApiExample.Controllers
             _service.RegistreerSoort(soort);
             return Ok("Soort toegevoegd.");
         }
-        
+
+        // GET: api/Soorten/{SoortID}
+        [HttpGet("{soortID}")]
+        public IActionResult HaalSoortOp(int soortID) {
+            var soort = _service.HaalSoortOp(soortID);
+            if (soort == null) {
+                return NotFound($"Soort met id {soortID} niet gevonden.");
+            }
+            return Ok(soort);
+        }
+
         // GET: api/Soorten
         [HttpGet]
         public IActionResult HaalAlleSoortenOp()

@@ -31,6 +31,7 @@ namespace ConsoleApp1 {
             int choice;
 
             Waarneming waarnemingInstance = new Waarneming();
+            Soort soortInstance = new Soort();
             List<Waarneming> waarnemingen = await waarnemingInstance.GetWaarnemingen();
 
             // ==== Start of Function ====
@@ -59,9 +60,18 @@ namespace ConsoleApp1 {
             input = Console.ReadLine();
             switch (input) {
                 case "1":
-                    Console.WriteLine("Nieuwe SoortID:");
-                    if (int.TryParse(Console.ReadLine(), out int newSoortID)) {
-                        waarneming.SoortID = newSoortID;
+                    while (true) {
+                        Console.WriteLine("Nieuwe SoortID:");
+                        if (int.TryParse(Console.ReadLine(), out int newSoortID)) {
+                            waarneming.SoortID = newSoortID;
+                        }
+
+                        // Check if the SoortID exists
+                        bool soortExistance = await soortInstance.GetSoort(waarneming.SoortID);
+                        if (soortExistance) {
+                            break;
+                        }
+                        Console.WriteLine("\nSoortID bestaat niet.\n");
                     }
                     break;
                 case "2":

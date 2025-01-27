@@ -40,6 +40,25 @@ internal class SoortRepository : DatabaseConnection {
         return soorten;
     }
 
+    public Soort HaalSoortOp(int soortID) {
+        using var connection = CreateOpenConnection();
+        string selectQuery = $@"
+            SELECT * FROM {TableName}
+            WHERE SoortID = @SoortID;";
+        using var command = new MySqlCommand(selectQuery, connection);
+        command.Parameters.AddWithValue("@SoortID", soortID);
+        using var reader = command.ExecuteReader();
+        if (reader.Read()) {
+            int id = reader.GetInt32(0);
+            string naam = reader.GetString(1);
+            string latijnseNaam = reader.GetString(2);
+            string zeldzaamheid = reader.GetString(3);
+            string status = reader.GetString(4);
+            return new Soort(id, naam, latijnseNaam, zeldzaamheid, status);
+        }
+        return null;
+    }
+
     public void VeranderSoort(int soortID, Soort soort) {
         using var connection = CreateOpenConnection();
         string updateQuery = $@"
