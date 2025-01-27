@@ -155,7 +155,7 @@ public class Waarneming : API {
     }
 
     // ==== Constructor ====
-    public Waarneming() : base(apiURL: "https://localhost:5001/api/Waarneming") {
+    public Waarneming() : base(apiURL: "http://48.209.56.82:5001/api/Waarneming") {
         this.WaarnemingID = 0;
         this.SoortID = 0;
         this.Datum = new DateTime();
@@ -166,7 +166,7 @@ public class Waarneming : API {
         this.WaarnemingLinks = "";
     }
 
-    public Waarneming(int waarnemingID, int soortID, DateTime datum, TimeSpan tijd, int aantalIndividuen, string geslacht, bool isGevalideerd, string waarnemingLinks) : base(apiURL: "https://localhost:5001/api/Waarneming") {
+    public Waarneming(int waarnemingID, int soortID, DateTime datum, TimeSpan tijd, int aantalIndividuen, string geslacht, bool isGevalideerd, string waarnemingLinks) : base(apiURL: "http://48.209.56.82:5001/api/Waarneming") {
         this.WaarnemingID = waarnemingID;
         this.SoortID = soortID;
         this.Datum = datum;

@@ -116,7 +116,7 @@ public class Soort : API {
     }
 
     // ==== Constructor ====
-    public Soort() : base(apiURL: "https://localhost:5001/api/Soorten") {
+    public Soort() : base(apiURL: "http://48.209.56.82:5001/api/Soorten") {
         this.SoortID = 0;
         this.Naam = "";
         this.Beschrijving = "";
@@ -125,7 +125,7 @@ public class Soort : API {
     }
 
     public Soort(int soortID, string naam, string beschrijving, string zeldzaamheid, string status)
-        : base(apiURL: "https://localhost:5001/api/Soorten") {
+        : base(apiURL: "http://48.209.56.82:5001/api/Soorten") {
         this.SoortID = soortID;
         this.Naam = naam;
         this.Beschrijving = beschrijving;

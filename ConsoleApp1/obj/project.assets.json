@@ -1,43 +1,43 @@
 {
   "version": 3,
   "targets": {
-    "net9.0": {}
+    "net8.0": {}
   },
   "libraries": {},
   "projectFileDependencyGroups": {
-    "net9.0": []
+    "net8.0": []
   },
   "packageFolders": {
-    "C:\\Users\\djody\\.nuget\\packages\\": {},
+    "C:\\Users\\Djody\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\djody\\Documents\\GitHub\\Casus-Exotisch-Nederland\\ConsoleApp1\\ConsoleApp1.csproj",
+      "projectUniqueName": "C:\\Users\\Djody\\Documents\\GitHub\\Casus-Exotisch-Nederland\\ConsoleApp1\\ConsoleApp1.csproj",
       "projectName": "ConsoleApp1",
-      "projectPath": "C:\\Users\\djody\\Documents\\GitHub\\Casus-Exotisch-Nederland\\ConsoleApp1\\ConsoleApp1.csproj",
-      "packagesPath": "C:\\Users\\djody\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\djody\\Documents\\GitHub\\Casus-Exotisch-Nederland\\ConsoleApp1\\obj\\",
+      "projectPath": "C:\\Users\\Djody\\Documents\\GitHub\\Casus-Exotisch-Nederland\\ConsoleApp1\\ConsoleApp1.csproj",
+      "packagesPath": "C:\\Users\\Djody\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Djody\\Documents\\GitHub\\Casus-Exotisch-Nederland\\ConsoleApp1\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\djody\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Djody\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
-        "net9.0"
+        "net8.0"
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
-        "net9.0": {
-          "targetAlias": "net9.0",
+        "net8.0": {
+          "targetAlias": "net8.0",
           "projectReferences": {}
         }
       },
@@ -54,8 +54,8 @@
       "SdkAnalysisLevel": "9.0.100"
     },
     "frameworks": {
-      "net9.0": {
-        "targetAlias": "net9.0",
+      "net8.0": {
+        "targetAlias": "net8.0",
         "imports": [
           "net461",
           "net462",
