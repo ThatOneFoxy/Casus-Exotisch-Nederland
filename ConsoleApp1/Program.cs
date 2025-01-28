@@ -8,9 +8,9 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace ConsoleApp1 {
     internal class Program {
         // ======== Functions ========
-        private static async Task DisplayWaarnemingen() {
+        private static async Task ToonWaarnemingen() {
             Waarneming waarnemingInstance = new Waarneming();
-            List<Waarneming> waarnemingen = await waarnemingInstance.GetWaarnemingen();
+            List<Waarneming> waarnemingen = await waarnemingInstance.HaalWaarnemingenOp();
 
             Console.WriteLine("Alle waarnemingen:");
             foreach (Waarneming waarneming in waarnemingen) {
@@ -18,21 +18,21 @@ namespace ConsoleApp1 {
             }
         }
 
-        private static async Task AddWaarneming() {
+        private static async Task VoegWaarnemingToe() {
             Waarneming waarnemingInstance = new Waarneming();
-            Waarneming newWaarneming = waarnemingInstance.WaarnemingPrompt();
+            Waarneming nieuwWaarneming = waarnemingInstance.WaarnemingPrompt();
 
-            await waarnemingInstance.PostWaarneming(newWaarneming);
+            await waarnemingInstance.PostWaarneming(nieuwWaarneming);
         }
 
         private static async Task UpdateWaarneming() {
             // ==== Declaring Variables ====
-            string input;
-            int choice;
+            string invoer;
+            int keuze;
 
             Waarneming waarnemingInstance = new Waarneming();
             Soort soortInstance = new Soort();
-            List<Waarneming> waarnemingen = await waarnemingInstance.GetWaarnemingen();
+            List<Waarneming> waarnemingen = await waarnemingInstance.HaalWaarnemingenOp();
 
             // ==== Start of Function ====
             Console.WriteLine("\nWelke waarneming zou je willen aanpassen?");
@@ -42,33 +42,33 @@ namespace ConsoleApp1 {
             }
 
             while (true) {
-                input = Console.ReadLine();
+                invoer = Console.ReadLine();
 
-                if (int.TryParse(input, out choice)) {
-                    if (choice >= 1 && choice <= waarnemingen.Count) {
+                if (int.TryParse(invoer, out keuze)) {
+                    if (keuze >= 1 && keuze <= waarnemingen.Count) {
                         break;
                     }
                     Console.WriteLine($"Ongeldige keuze. Kies een nummer tussen 1 en {waarnemingen.Count}.");
                 }
             }
 
-            Waarneming waarneming = waarnemingen[choice - 1];
+            Waarneming waarneming = waarnemingen[keuze - 1];
             waarneming.ToonWaarnemingDetails();
 
             Console.WriteLine("\nWelk detail moet aangepast worden?\n1. SoortID\n2. Datum\n3. Tijd\n4. Aantal Individuen\n5. Geslacht\n6. Is Gevalideerd\n7. Waarneming Links");
 
-            input = Console.ReadLine();
-            switch (input) {
+            invoer = Console.ReadLine();
+            switch (invoer) {
                 case "1":
                     while (true) {
                         Console.WriteLine("Nieuwe SoortID:");
-                        if (int.TryParse(Console.ReadLine(), out int newSoortID)) {
-                            waarneming.SoortID = newSoortID;
+                        if (int.TryParse(Console.ReadLine(), out int nieuweSoortID)) {
+                            waarneming.SoortID = nieuweSoortID;
                         }
 
                         // Check if the SoortID exists
-                        bool soortExistance = await soortInstance.GetSoort(waarneming.SoortID);
-                        if (soortExistance) {
+                        bool soortBestaan = await soortInstance.HaalSoortOp(waarneming.SoortID);
+                        if (soortBestaan) {
                             break;
                         }
                         Console.WriteLine("\nSoortID bestaat niet.\n");
@@ -76,20 +76,20 @@ namespace ConsoleApp1 {
                     break;
                 case "2":
                     Console.WriteLine("Nieuwe Datum:");
-                    if (DateTime.TryParse(Console.ReadLine(), out DateTime newDatum)) {
-                        waarneming.Datum = newDatum;
+                    if (DateTime.TryParse(Console.ReadLine(), out DateTime nieuweDatum)) {
+                        waarneming.Datum = nieuweDatum;
                     }
                     break;
                 case "3":
                     Console.WriteLine("Nieuwe Tijd:");
-                    if (TimeSpan.TryParse(Console.ReadLine(), out TimeSpan newTijd)) {
-                        waarneming.Tijd = newTijd;
+                    if (TimeSpan.TryParse(Console.ReadLine(), out TimeSpan nieweTijd)) {
+                        waarneming.Tijd = nieweTijd;
                     }
                     break;
                 case "4":
                     Console.WriteLine("Nieuw Aantal Individuen:");
-                    if (int.TryParse(Console.ReadLine(), out int newAantalIndividuen)) {
-                        waarneming.AantalIndividuen = newAantalIndividuen;
+                    if (int.TryParse(Console.ReadLine(), out int nieuwAantalIndividuen)) {
+                        waarneming.AantalIndividuen = nieuwAantalIndividuen;
                     }
                     break;
                 case "5":
@@ -115,11 +115,11 @@ namespace ConsoleApp1 {
 
         private static async Task DeleteWaarneming() {
             // ==== Declaring Variables ====
-            string input;
-            int choice;
+            string invoer;
+            int keuze;
 
             Waarneming waarnemingInstance = new Waarneming();
-            List<Waarneming> waarnemingen = await waarnemingInstance.GetWaarnemingen();
+            List<Waarneming> waarnemingen = await waarnemingInstance.HaalWaarnemingenOp();
 
             // ==== Start of Function ====
             Console.WriteLine("\nWelke waarneming zou je willen verwijderen?");
@@ -129,22 +129,22 @@ namespace ConsoleApp1 {
             }
 
             while (true) {
-                input = Console.ReadLine();
+                invoer = Console.ReadLine();
 
-                if (int.TryParse(input, out choice)) {
-                    if (choice >= 1 && choice <= waarnemingen.Count) {
+                if (int.TryParse(invoer, out keuze)) {
+                    if (keuze >= 1 && keuze <= waarnemingen.Count) {
                         break;
                     }
                     Console.WriteLine($"Ongeldige keuze. Kies een nummer tussen 1 en {waarnemingen.Count}.");
                 }
             }
 
-            await waarnemingInstance.DeleteWaarneming(choice);
+            await waarnemingInstance.DeleteWaarneming(keuze);
         }
 
-        private static async Task DisplaySoorten() {
+        private static async Task LaatSoortenZien() {
             Soort soortInstance = new Soort();
-            List<Soort> soorten = await soortInstance.GetSoorten();
+            List<Soort> soorten = await soortInstance.HaalSoortenOp();
 
             Console.WriteLine("Alle soorten:");
             foreach (Soort soort in soorten) {
@@ -152,17 +152,17 @@ namespace ConsoleApp1 {
             }
         }
 
-        private static async Task AddSoort() {
+        private static async Task VoegSoortToe() {
             Soort soortInstance = new Soort();
-            Soort newSoort = soortInstance.SoortPrompt();
+            Soort nieuweSoort = soortInstance.SoortPrompt();
 
-            await soortInstance.PostSoort(newSoort);
+            await soortInstance.PostSoort(nieuweSoort);
         }
 
         private static async Task UpdateSoort() {
             // ==== Declaring Variables ====
-            string input;
-            int choice;
+            string invoer;
+            int keuze;
 
             Soort soortInstance = new Soort();
             List<Soort> soorten = await soortInstance.GetSoorten();
@@ -175,23 +175,23 @@ namespace ConsoleApp1 {
             }
 
             while (true) {
-                input = Console.ReadLine();
+                invoer = Console.ReadLine();
 
-                if (int.TryParse(input, out choice)) {
-                    if (choice >= 1 && choice <= soorten.Count) {
+                if (int.TryParse(invoer, out keuze)) {
+                    if (keuze >= 1 && keuze <= soorten.Count) {
                         break;
                     }
                     Console.WriteLine($"Ongeldige keuze. Kies een nummer tussen 1 en {soorten.Count}.");
                 }
             }
 
-            Soort soort = soorten[choice - 1];
+            Soort soort = soorten[keuze - 1];
             soort.ToonSoortDetails();
 
             Console.WriteLine("\nWelk detail moet aangepast worden?\n1. Naam\n2. Latijnse Naam\n3. Zeldzaamheid\n4. Status");
 
-            input = Console.ReadLine();
-            switch (input) {
+            invoer = Console.ReadLine();
+            switch (invoer) {
                 case "1":
                     Console.WriteLine("Nieuwe Naam:");
                     soort.Naam = Console.ReadLine();
@@ -218,11 +218,11 @@ namespace ConsoleApp1 {
 
         private static async Task DeleteSoort() {
             // ==== Declaring Variables ====
-            string input;
-            int choice;
+            string invoer;
+            int keuze;
 
             Soort soortInstance = new Soort();
-            List<Soort> soorten = await soortInstance.GetSoorten();
+            List<Soort> soorten = await soortInstance.HaalSoortenOp();
 
             // ==== Start of Function ====
             Console.WriteLine("\nWelke soort zou je willen verwijderen?");
@@ -232,17 +232,17 @@ namespace ConsoleApp1 {
             }
 
             while (true) {
-                input = Console.ReadLine();
+                invoer = Console.ReadLine();
 
-                if (int.TryParse(input, out choice)) {
-                    if (choice >= 1 && choice <= soorten.Count) {
+                if (int.TryParse(invoer, out keuze)) {
+                    if (keuze >= 1 && keuze <= soorten.Count) {
                         break;
                     }
                     Console.WriteLine($"Ongeldige keuze. Kies een nummer tussen 1 en {soorten.Count}.");
                 }
             }
 
-            await soortInstance.DeleteSoort(choice);
+            await soortInstance.DeleteSoort(keuze);
         }
 
         // ======== Main ========
@@ -266,16 +266,16 @@ namespace ConsoleApp1 {
                               
                               """");
 
-                string input = Console.ReadLine();
-                if (int.TryParse(input, out int choice)) {
-                    if (choice is < 1 or > 8) { Console.WriteLine("Ongeldige keuze. Kies een nummer tussen 1 en 8."); continue; }
+                string invoer = Console.ReadLine();
+                if (int.TryParse(invoer, out int keuze)) {
+                    if (keuze is < 1 or > 8) { Console.WriteLine("Ongeldige keuze. Kies een nummer tussen 1 en 8."); continue; }
 
-                    switch (choice) {
+                    switch (keuze) {
                         case 1:
-                            await DisplayWaarnemingen();
+                            await ToonWaarnemingen();
                             break;
                         case 2:
-                            await AddWaarneming();
+                            await VoegWaarnemingToe();
                             break;
                         case 3:
                             await UpdateWaarneming();
@@ -284,10 +284,10 @@ namespace ConsoleApp1 {
                             await DeleteWaarneming();
                             break;
                         case 5:
-                            await DisplaySoorten();
+                            await LaatSoortenZien();
                             break;
                         case 6:
-                            await AddSoort();
+                            await VoegSoortToe();
                             break;
                         case 7:
                             await UpdateSoort();
