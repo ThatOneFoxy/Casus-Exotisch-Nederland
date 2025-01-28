@@ -39,8 +39,8 @@ public class Waarneming : API {
         Console.WriteLine($"Waarneming links: {this.WaarnemingLinks}\n");
     }
 
-    public async Task<List<Waarneming>> GetWaarnemingen() {
-        var data = await this.GetDataFromAPI(this.GetAPIURL());
+    public async Task<List<Waarneming>> HaalWaarnemingenOp() {
+        var data = await this.VerkrijgDataVanAPI(this.GetAPIURL());
 
         if (data != null) {
             List<Waarneming> waarnemingen = JsonSerializer.Deserialize<List<Waarneming>>(data);
@@ -53,9 +53,9 @@ public class Waarneming : API {
         // Making it into a good json
         string jsonString = JsonSerializer.Serialize(waarneming);
 
-        bool requestResult = await this.PostDataToAPI(jsonString);
+        bool requestResultaat = await this.PostDataNaarAPI(jsonString);
 
-        if (requestResult) {
+        if (requestResultaat) {
             Console.WriteLine("Waarneming toegevoegd.");
         }
         else {
@@ -69,9 +69,9 @@ public class Waarneming : API {
 
         // Making it into a good json
         string jsonString = JsonSerializer.Serialize(waarneming);
-        bool requestResult = await this.PUTDataToAPI(waarneming.WaarnemingID.ToString(), jsonString);
+        bool requestResultaat = await this.PUTDataNaarAPI(waarneming.WaarnemingID.ToString(), jsonString);
 
-        if (requestResult) {
+        if (requestResultaat) {
             Console.WriteLine("Waarneming bijgewerkt.");
         }
         else {
@@ -80,9 +80,9 @@ public class Waarneming : API {
     }
 
     public async Task DeleteWaarneming(int waarnemingID) {
-        bool requestResult = await this.DELToAPI(waarnemingID.ToString());
+        bool requestResultaat = await this.DeleteNaarAPI(waarnemingID.ToString());
 
-        if (requestResult) {
+        if (requestResultaat) {
             Console.WriteLine("Waarneming verwijderd.\n");
         }
         else {
@@ -100,29 +100,29 @@ public class Waarneming : API {
 
         while (true) {
             Console.WriteLine("SoortID:");
-            string input = Console.ReadLine();
-            if (int.TryParse(input, out soortID)) { break; }
+            string invoer = Console.ReadLine();
+            if (int.TryParse(invoer, out soortID)) { break; }
             Console.WriteLine("Ongeldige invoer. Voer een getal in.");
         }
 
         while (true) {
             Console.WriteLine("Tijd:");
-            string input = Console.ReadLine();
-            if (TimeSpan.TryParse(input, out tijd)) { break; }
+            string invoer = Console.ReadLine();
+            if (TimeSpan.TryParse(invoer, out tijd)) { break; }
             Console.WriteLine("Ongeldige invoer. Voer een tijd in.");
         }
 
         while (true) {
             Console.WriteLine("Datum:");
-            string input = Console.ReadLine();
-            if (DateTime.TryParse(input, out datum)) { break; }
+            string invoer = Console.ReadLine();
+            if (DateTime.TryParse(invoer, out datum)) { break; }
             Console.WriteLine("Ongeldige invoer. Voer een datum in.");
         }
 
         while (true) {
             Console.WriteLine("Aantal individuen:");
-            string input = Console.ReadLine();
-            if (int.TryParse(input, out aantalIndividuen)) { break; }
+            string invoer = Console.ReadLine();
+            if (int.TryParse(invoer, out aantalIndividuen)) { break; }
             Console.WriteLine("Ongeldige invoer. Voer een getal in.");
         }
 
@@ -136,13 +136,13 @@ public class Waarneming : API {
 
         while (true) {
             Console.WriteLine("Is de waarneming gevalideerd (ja/nee)?:");
-            string input = Console.ReadLine();
-            if (input is "ja" or "nee") { isGevalideerd = input == "ja" ? true : false; break; }
+            string invoer = Console.ReadLine();
+            if (invoer is "ja" or "nee") { isGevalideerd = invoer == "ja" ? true : false; break; }
             Console.WriteLine("Ongeldige invoer. Voer ja of nee in.");
         }
 
         // ==== Start of Function ====
-        Waarneming newWaarneming = new Waarneming {
+        Waarneming nieuweWaarneming = new Waarneming {
             SoortID = soortID,
             Tijd = tijd,
             Datum = datum,
@@ -151,7 +151,7 @@ public class Waarneming : API {
             IsGevalideerd = isGevalideerd,
             WaarnemingLinks = ""
         };
-        return newWaarneming;
+        return nieuweWaarneming;
     }
 
     // ==== Constructor ====

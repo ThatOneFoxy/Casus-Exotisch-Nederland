@@ -29,8 +29,8 @@ public class Soort : API {
         Console.WriteLine($"Status: {this.Status}\n");
     }
 
-    public async Task<List<Soort>> GetSoorten() {
-        var data = await this.GetDataFromAPI(this.GetAPIURL());
+    public async Task<List<Soort>> HaalSoortenOp() {
+        var data = await this.VerkrijgDataVanAPI(this.GetAPIURL());
 
         if (data != null) {
             List<Soort> soorten = JsonSerializer.Deserialize<List<Soort>>(data);
@@ -39,9 +39,9 @@ public class Soort : API {
         return new List<Soort>();
     }
 
-    public async Task<bool> GetSoort(int soortID)
+    public async Task<bool> HaalSoortOp(int soortID)
     {
-        var data = await this.GetDataFromAPI(this.GetAPIURL(), soortID);
+        var data = await this.VerkrijgDataVanAPI(this.GetAPIURL(), soortID);
 
         if (data != null) {
             Soort soort = JsonSerializer.Deserialize<Soort>(data);
@@ -55,9 +55,9 @@ public class Soort : API {
     public async Task PostSoort(Soort soort) {
         string jsonString = JsonSerializer.Serialize(soort);
 
-        bool requestResult = await this.PostDataToAPI(jsonString);
+        bool requestResultaat = await this.PostDataNaarAPI(jsonString);
 
-        if (requestResult) {
+        if (requestResultaat) {
             Console.WriteLine("Soort toegevoegd.");
         }
         else {
@@ -68,9 +68,9 @@ public class Soort : API {
     public async Task UpdateSoort(Soort soort) {
         string jsonString = JsonSerializer.Serialize(soort);
 
-        bool requestResult = await this.PUTDataToAPI(soort.SoortID.ToString(), jsonString);
+        bool requestResultaat = await this.PUTDataNaarAPI(soort.SoortID.ToString(), jsonString);
 
-        if (requestResult) {
+        if (requestResultaat) {
             Console.WriteLine("Soort bijgewerkt.");
         }
         else {
@@ -79,9 +79,9 @@ public class Soort : API {
     }
 
     public async Task DeleteSoort(int soortID) {
-        bool requestResult = await this.DELToAPI(soortID.ToString());
+        bool requestResultaat = await this.DeleteNaarAPI(soortID.ToString());
 
-        if (requestResult) {
+        if (requestResultaat) {
             Console.WriteLine("Soort verwijderd.\n");
         }
         else {
@@ -106,13 +106,13 @@ public class Soort : API {
         status = Console.ReadLine();
 
         // ==== Start of Function ====
-        Soort newSoort = new Soort {
+        Soort nieuwSoort = new Soort {
             Naam = naam,
             Beschrijving = beschrijving,
             Zeldzaamheid = zeldzaamheid,
             Status = status
         };
-        return newSoort;
+        return nieuwSoort;
     }
 
     // ==== Constructor ====

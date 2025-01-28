@@ -12,12 +12,12 @@ public class API {
     private string? apiURL = "";
 
     // ==== Getters ====
-    public string GetAPIURL() {
+    public string VerkrijgAPIURL() {
         return this.apiURL;
     }
 
     // ==== Methods ====
-    public async Task<string> GetDataFromAPI(string apiUrl, int id=0) {
+    public async Task<string> VerkrijgDataVanAPI(string apiUrl, int id=0) {
         string url = id == 0 ? apiUrl : $"{apiUrl}/{id.ToString()}";
 
         using (HttpClient client = new HttpClient()) {
@@ -34,7 +34,7 @@ public class API {
                 return null;
             }
             catch (HttpRequestException e) {
-                Console.WriteLine($"An error occurred: {e.Message}");
+                Console.WriteLine($"Een error heeft opgetreden: {e.Message}");
                 return null;
             }
             catch (JsonException e) {
@@ -44,7 +44,7 @@ public class API {
         }
     }
 
-    public async Task<bool> PostDataToAPI(string data) {
+    public async Task<bool> PostDataNaarAPI(string data) {
         using (HttpClient client = new HttpClient()) {
             try {
                 // Console.WriteLine($"Sending POST request to {endpoint} with data: {data}");
@@ -60,13 +60,13 @@ public class API {
                 return false;
             }
             catch (HttpRequestException e) {
-                Console.WriteLine($"An error occurred: {e.Message}");
+                Console.WriteLine($"Een error heeft opgetreden: {e.Message}");
                 return false;
             }
         }
     }
 
-    public async Task<bool> PUTDataToAPI(string endpoint, string data) {
+    public async Task<bool> PUTDataNaarAPI(string endpoint, string data) {
         using (HttpClient client = new HttpClient()) {
             try {
                 // Console.WriteLine($"Sending PUT request to {endpoint} with data: {data}");
@@ -82,13 +82,13 @@ public class API {
                 return false;
             }
             catch (HttpRequestException e) {
-                Console.WriteLine($"An error occurred: {e.Message}");
+                Console.WriteLine($"Een error heeft opgetreden: {e.Message}");
                 return false;
             }
         }
     }
 
-    public async Task<bool> DELToAPI(string endpoint) {
+    public async Task<bool> DeleteNaarAPI(string endpoint) {
         using (HttpClient client = new HttpClient()) {
             try {
                 // Console.WriteLine($"Sending PUT request to {endpoint} with data: {data}");
@@ -101,7 +101,7 @@ public class API {
                 return false;
             }
             catch (HttpRequestException e) {
-                Console.WriteLine($"An error occurred: {e.Message}");
+                Console.WriteLine($"Een error heeft opgetreden: {e.Message}");
                 return false;
             }
         }
