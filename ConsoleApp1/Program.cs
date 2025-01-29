@@ -12,7 +12,7 @@ namespace ConsoleApp1 {
             Waarneming waarnemingInstance = new Waarneming();
             List<Waarneming> waarnemingen = await waarnemingInstance.HaalWaarnemingenOp();
 
-            Console.WriteLine("Alle waarnemingen:");
+            Console.WriteLine("\nAlle waarnemingen:");
             foreach (Waarneming waarneming in waarnemingen) {
                 waarneming.ToonWaarnemingDetails();
             }
@@ -20,7 +20,7 @@ namespace ConsoleApp1 {
 
         private static async Task VoegWaarnemingToe() {
             Waarneming waarnemingInstance = new Waarneming();
-            Waarneming nieuwWaarneming = waarnemingInstance.WaarnemingPrompt();
+            Waarneming nieuwWaarneming = await waarnemingInstance.WaarnemingPrompt();
 
             await waarnemingInstance.PostWaarneming(nieuwWaarneming);
         }
@@ -116,7 +116,7 @@ namespace ConsoleApp1 {
         private static async Task DeleteWaarneming() {
             // ==== Declaring Variables ====
             string invoer;
-            int keuze;
+            int keuze, waarnemingID;
 
             Waarneming waarnemingInstance = new Waarneming();
             List<Waarneming> waarnemingen = await waarnemingInstance.HaalWaarnemingenOp();
@@ -139,14 +139,14 @@ namespace ConsoleApp1 {
                 }
             }
 
-            await waarnemingInstance.DeleteWaarneming(keuze);
+            await waarnemingInstance.DeleteWaarneming(waarnemingen[keuze - 1].WaarnemingID);
         }
 
         private static async Task LaatSoortenZien() {
             Soort soortInstance = new Soort();
             List<Soort> soorten = await soortInstance.HaalSoortenOp();
 
-            Console.WriteLine("Alle soorten:");
+            Console.WriteLine("\nAlle soorten:");
             foreach (Soort soort in soorten) {
                 soort.ToonSoortDetails();
             }
@@ -242,7 +242,7 @@ namespace ConsoleApp1 {
                 }
             }
 
-            await soortInstance.DeleteSoort(keuze);
+            await soortInstance.DeleteSoort(soorten[keuze - 1].SoortID);
         }
 
         // ======== Main ========

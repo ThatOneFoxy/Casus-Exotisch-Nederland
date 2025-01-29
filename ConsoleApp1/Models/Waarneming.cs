@@ -30,12 +30,8 @@ public class Waarneming : API {
 
     // ==== Methods ====
     public void ToonWaarnemingDetails() {
-        Console.WriteLine($"Soort ID: {this.SoortID}");
-        Console.WriteLine($"Datum: {this.Datum}");
-        Console.WriteLine($"Tijd: {this.Tijd}");
-        Console.WriteLine($"Aantal individuen: {this.AantalIndividuen}");
-        Console.WriteLine($"Geslacht: {this.Geslacht}");
-        Console.WriteLine($"Is gevalideerd: {this.IsGevalideerd}");
+        Console.WriteLine($"Soort ID: {this.SoortID} | Datum: {this.Datum} | Tijd: {this.Tijd} | Is gevalideerd: {this.IsGevalideerd}");
+        Console.WriteLine($"Geslacht: {this.Geslacht} | Aantal individuen: {this.AantalIndividuen}");
         Console.WriteLine($"Waarneming links: {this.WaarnemingLinks}\n");
     }
 
@@ -90,19 +86,29 @@ public class Waarneming : API {
         }
     }
 
-    public Waarneming WaarnemingPrompt() {
+    public async Task<Waarneming> WaarnemingPrompt() {
         // ==== Declaring Variables ====
         int soortID, aantalIndividuen;
         string geslacht;
         bool isGevalideerd;
         TimeSpan tijd;
         DateTime datum;
+        Soort soortInstance = new Soort();
 
         while (true) {
             Console.WriteLine("SoortID:");
             string invoer = Console.ReadLine();
-            if (int.TryParse(invoer, out soortID)) { break; }
-            Console.WriteLine("Ongeldige invoer. Voer een getal in.");
+            if (int.TryParse(invoer, out soortID)) {
+                // Check if the SoortID exists
+                bool soortBestaan = await soortInstance.HaalSoortOp(soortID);
+                if (soortBestaan) {
+                    break;
+                }
+                Console.WriteLine("\nSoortID bestaat niet.\n");
+            }
+            else {
+                Console.WriteLine("Ongeldige invoer. Voer een getal in.");
+            }
         }
 
         while (true) {

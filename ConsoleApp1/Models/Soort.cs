@@ -22,11 +22,8 @@ public class Soort : API {
 
     // ==== Methods ====
     public void ToonSoortDetails() {
-        Console.WriteLine($"Soort ID: {this.SoortID}");
-        Console.WriteLine($"Naam: {this.Naam}");
-        Console.WriteLine($"Latijnse Naam: {this.Beschrijving}");
-        Console.WriteLine($"Zeldzaamheid: {this.Zeldzaamheid}");
-        Console.WriteLine($"Status: {this.Status}\n");
+        Console.WriteLine($"Soort ID: {this.SoortID} | Naam: {this.Naam} | Latijnse Naam: {this.Beschrijving}");
+        Console.WriteLine($"Zeldzaamheid: {this.Zeldzaamheid} | Status: {this.Status}\n");
     }
 
     public async Task<List<Soort>> HaalSoortenOp() {
