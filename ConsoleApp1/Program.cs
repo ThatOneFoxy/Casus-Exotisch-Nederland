@@ -165,7 +165,7 @@ namespace ConsoleApp1 {
             int keuze;
 
             Soort soortInstance = new Soort();
-            List<Soort> soorten = await soortInstance.GetSoorten();
+            List<Soort> soorten = await soortInstance.HaalSoortenOp();
 
             // ==== Start of Function ====
             Console.WriteLine("\nWelke soort zou je willen aanpassen?");

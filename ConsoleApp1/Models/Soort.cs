@@ -30,7 +30,7 @@ public class Soort : API {
     }
 
     public async Task<List<Soort>> HaalSoortenOp() {
-        var data = await this.VerkrijgDataVanAPI(this.GetAPIURL());
+        var data = await this.VerkrijgDataVanAPI(this.VerkrijgAPIURL());
 
         if (data != null) {
             List<Soort> soorten = JsonSerializer.Deserialize<List<Soort>>(data);
@@ -41,7 +41,7 @@ public class Soort : API {
 
     public async Task<bool> HaalSoortOp(int soortID)
     {
-        var data = await this.VerkrijgDataVanAPI(this.GetAPIURL(), soortID);
+        var data = await this.VerkrijgDataVanAPI(this.VerkrijgAPIURL(), soortID);
 
         if (data != null) {
             Soort soort = JsonSerializer.Deserialize<Soort>(data);

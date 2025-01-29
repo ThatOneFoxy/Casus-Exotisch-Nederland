@@ -40,7 +40,7 @@ public class Waarneming : API {
     }
 
     public async Task<List<Waarneming>> HaalWaarnemingenOp() {
-        var data = await this.VerkrijgDataVanAPI(this.GetAPIURL());
+        var data = await this.VerkrijgDataVanAPI(this.VerkrijgAPIURL());
 
         if (data != null) {
             List<Waarneming> waarnemingen = JsonSerializer.Deserialize<List<Waarneming>>(data);
