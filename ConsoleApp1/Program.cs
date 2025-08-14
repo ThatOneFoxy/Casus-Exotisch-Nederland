@@ -19,9 +19,11 @@ namespace ConsoleApp1 {
         }
 
         private static async Task VoegWaarnemingToe() {
+            // ==== Declaring Variables ====
             Waarneming waarnemingInstance = new Waarneming();
             Waarneming nieuwWaarneming = await waarnemingInstance.WaarnemingPrompt();
 
+            // ==== Start of Function ====
             await waarnemingInstance.PostWaarneming(nieuwWaarneming);
         }
 
@@ -143,9 +145,11 @@ namespace ConsoleApp1 {
         }
 
         private static async Task LaatSoortenZien() {
+            // ==== Declaring Variables ====
             Soort soortInstance = new Soort();
             List<Soort> soorten = await soortInstance.HaalSoortenOp();
 
+            // ==== Start of Function ====
             Console.WriteLine("\nAlle soorten:");
             foreach (Soort soort in soorten) {
                 soort.ToonSoortDetails();
@@ -153,9 +157,11 @@ namespace ConsoleApp1 {
         }
 
         private static async Task VoegSoortToe() {
+            // ==== Declaring Variables ====
             Soort soortInstance = new Soort();
             Soort nieuweSoort = soortInstance.SoortPrompt();
 
+            // ==== Start of Function ====
             await soortInstance.PostSoort(nieuweSoort);
         }
 
